@@ -163,6 +163,7 @@
 			socket.emit('join', $('#username').val());
 			$('.user-box').css("display", "none");
 			$('.chat-box').css("display", "block");
+			reAdjustChat();
 			return false;
 		});
 		
@@ -173,19 +174,28 @@
 			$('#messages').append(msgElement);
 			socket.emit('chat message', msg);
 			$('#m').val('');
+			reAdjustChat();
 			return false;
 		});
 		
         socket.on('chat message', function(username, msg){
 			var msgElement = '<li id="recieve"><div class="msg-body"><span class="username">' + username + '</span>' + msg + '</div></li>';
-        	$('#messages').append(msgElement);
+			$('#messages').append(msgElement);
+			reAdjustChat();
 		});
 		
         socket.on('notify', function(msg){
 			var notifyElem = '<li id="notify"><div class="notify-body">' + msg + '</div></li>';
-        	$('#messages').append(notifyElem);
+			$('#messages').append(notifyElem);
+			reAdjustChat();
         });
     });
-    </script>
+	</script>
+	<script>
+		function reAdjustChat(){
+			var chatHistory = document.getElementById("messages");
+			chatHistory.scrollTop = chatHistory.scrollHeight;
+		}
+	</script>
   </body>
 </html>
